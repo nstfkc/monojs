@@ -29,6 +29,11 @@ function createContext() {
       renderStore.set(pos.join(":"), fn);
     },
     getRenderStore: () => renderStore,
+    reset: () => {
+      anchorElement = null;
+      renderStore = new Map();
+      anchorStore = new Map();
+    },
   };
 }
 

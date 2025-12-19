@@ -1,4 +1,4 @@
-import { test, expect } from "bun:test";
+import { test, expect, afterEach } from "bun:test";
 import { screen } from "@testing-library/dom";
 
 import { Main } from "./index";
