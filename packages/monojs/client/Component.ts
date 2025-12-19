@@ -17,12 +17,11 @@ export class Component {
   }
 
   static style(this: typeof Component, styles: Record<string, any>) {
-    class ComponentWithStyles extends this {
+    return class extends this {
       constructor(..._args: any[]) {
         super();
       }
       styles = styles;
-    }
-    return ComponentWithStyles as typeof Component;
+    };
   }
 }

@@ -1,10 +1,9 @@
-import { Component } from "./Component";
 import { Context } from "./Context";
 
-export class Root {
-  static render(App: typeof Component) {
+export class Main {
+  static render(App: VoidFunction) {
     Context.setAnchorElement(document.body);
-    App.render([0]);
+    App();
 
     const processed = new Set<string>();
     const store = Context.getRenderStore();
