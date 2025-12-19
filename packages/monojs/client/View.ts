@@ -11,8 +11,8 @@ export function View(...children: (typeof Component)[]) {
         el.style.setProperty(key, value);
       }
 
-      Context.getAnchorElement()?.appendChild(el);
-      Context.setAnchorElement(el);
+      Context.getAnchorForPosition(pos)?.appendChild(el);
+      Context.setAnchorForChildren(pos, el);
 
       let _pos = Context.getNextCol(pos);
       for (const Child of this.children) {

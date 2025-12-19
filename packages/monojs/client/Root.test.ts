@@ -16,13 +16,14 @@ test("root render", () => {
         View(Text("Nested 1"), Text("Nested 2"))
       ).style({
         backgroundColor: "white",
-      })
+      }),
+      Text("Outside")
     );
   }
   Main.render(App);
   screen.debug();
 
   expect(document.body.innerHTML).toEqual(
-    '<div style="backgroundColor: white;"><span>Red</span><span>Blue</span></div>'
+    '<div style="backgroundColor: white;"><span>Red</span><span>Blue</span><div><span>Nested 1</span><span>Nested 2</span></div></div><span>Outside</span>'
   );
 });

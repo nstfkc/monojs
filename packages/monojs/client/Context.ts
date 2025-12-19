@@ -1,6 +1,7 @@
 function createContext() {
   let anchorElement: HTMLElement | null = null;
   let renderStore: Map<string, VoidFunction> = new Map();
+  let anchorStore: Map<string, HTMLElement | null> = new Map();
 
   return {
     getNextCol: (pos: number[]) => {
@@ -16,6 +17,14 @@ function createContext() {
       anchorElement = element;
     },
     getAnchorElement: () => anchorElement,
+    setAnchorForChildren: (pos: number[], element: HTMLElement | null) => {
+      anchorStore.set(pos.join(":"), element);
+    },
+    getAnchorForPosition: (pos: number[]) => {
+      if (pos.length === 0) return null;
+      const parentPos = pos.slice(0, -1);
+      return anchorStore.get(parentPos.join(":")) ?? null;
+    },
     pushRender: (pos: number[], fn: VoidFunction) => {
       renderStore.set(pos.join(":"), fn);
     },
