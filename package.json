@@ -1,5 +1,5 @@
 {
-  "name": "monojs",
+  "name": "monojs/monorepo",
   "private": true,
   "scripts": {
     "build": "turbo run build",

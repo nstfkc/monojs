@@ -1,0 +1,19 @@
+{
+  "name": "monojs",
+  "type": "module",
+  "exports": {
+    ".": "./client/index.ts"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "bun build index.ts --outdir dist"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
