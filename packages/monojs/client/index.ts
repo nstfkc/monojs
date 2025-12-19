@@ -1,15 +1,23 @@
+import { Component } from "./Component";
 import { Context } from "./Context";
 
-type Component<T extends any = any> =
-  | VoidFunction
-  | ((...props: T[]) => undefined | VoidFunction);
-
 export class Root {
-  static render(Component: Component) {
+  static render(App: typeof Component) {
     Context.setAnchorElement(document.body);
-    Component();
-    for (const fn of Array.from(Context.getRenders().values())) {
-      fn();
+    App.render([0]);
+
+    const processed = new Set<string>();
+    const store = Context.getRenderStore();
+
+    while (store.size > processed.size) {
+      const entries = Array.from(store.entries())
+        .filter(([key]) => !processed.has(key))
+        .sort(([a], [b]) => a.localeCompare(b));
+
+      for (const [key, fn] of entries) {
+        fn();
+        processed.add(key);
+      }
     }
   }
 }

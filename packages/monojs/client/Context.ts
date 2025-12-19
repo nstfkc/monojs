@@ -1,28 +1,25 @@
 function createContext() {
   let anchorElement: HTMLElement | null = null;
-  let render: Map<string, VoidFunction> = new Map();
-  let letters = "abcdefghijklmnopqrstuvwxyz";
-  let row = 0;
-  let col = 0;
+  let renderStore: Map<string, VoidFunction> = new Map();
 
   return {
+    getNextCol: (pos: number[]) => {
+      return [...pos, 0];
+    },
+    getNextRow: (pos: number[]) => {
+      const last = pos[pos.length - 1];
+      const out = Object.assign([], pos) as number[];
+      out[out.length - 1] = last + 1;
+      return out;
+    },
     setAnchorElement: (element: HTMLElement | null) => {
       anchorElement = element;
     },
     getAnchorElement: () => anchorElement,
-    setRender: (id: string, fn: VoidFunction) => {
-      render.set(id, fn);
+    pushRender: (pos: number[], fn: VoidFunction) => {
+      renderStore.set(pos.join(":"), fn);
     },
-    getRenders: () => render,
-    getRenderId: () => {
-      const id = `r-${letters[col]}:${row}`;
-      col++;
-      if (col >= letters.length) {
-        col = 0;
-        row++;
-      }
-      return id;
-    },
+    getRenderStore: () => renderStore,
   };
 }
 
