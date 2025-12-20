@@ -34,12 +34,17 @@ export class MonoElement {
   }
 
   static style(this: typeof MonoElement, styles: Record<string, any>) {
-    return class extends this {
+    const StyledClass = class extends this {
       constructor(..._args: any[]) {
         super();
       }
       override styles = styles;
     };
+
+    // Replace parent class with styled class in pending registrations
+    Context.replacePending(this, StyledClass);
+
+    return StyledClass;
   }
 
   static on<E extends EventName>(

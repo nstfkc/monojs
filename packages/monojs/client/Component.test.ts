@@ -30,13 +30,15 @@ test("Render nested components", () => {
 
 test("Render component as children", () => {
   const Message = () => {
-    View(Text("Nested Message"));
+    View(Text("Nested Message").style({ color: "red" }));
   };
   const App = () => {
-    View(Text("Start"), Message());
+    View(Text("Start").style({ color: "black" }), Message()).style({
+      border: "1px solid black",
+    });
   };
   render(App());
   expect(document.body.innerHTML).toBe(
-    "<div><span>Start</span><div><span>Nested Message</span></div></div>"
+    '<div style="border: 1px solid black;"><span style="color: black;">Start</span><div><span style="color: red;">Nested Message</span></div></div>'
   );
 });

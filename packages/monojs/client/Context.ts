@@ -3,6 +3,7 @@ function createContext() {
   let anchorFns: Map<string, (el: HTMLElement) => void> = new Map();
   let registeredElements: Set<any> = new Set();
   let consumedElements: Set<any> = new Set();
+  let pendingElements: any[] = [];
   const defaultAnchorFn = (el: HTMLElement) => {
     const textNode = document.createTextNode("");
     textNode.before(el);
@@ -31,6 +32,7 @@ function createContext() {
     },
     pushElement: (el: any) => {
       registeredElements.add(el);
+      pendingElements.push(el);
     },
     markConsumed: (el: any) => {
       consumedElements.add(el);
@@ -41,6 +43,28 @@ function createContext() {
     resetComponent: () => {
       registeredElements = new Set();
       consumedElements = new Set();
+      pendingElements = [];
+    },
+    getPendingElements: (): any[] => {
+      return pendingElements.filter(el => !consumedElements.has(el));
+    },
+    consumePending: (count: number): any[] => {
+      const pending = pendingElements.filter(el => !consumedElements.has(el));
+      const consumed = pending.slice(0, count);
+      for (const el of consumed) {
+        consumedElements.add(el);
+      }
+      return consumed;
+    },
+    replacePending: (oldEl: any, newEl: any) => {
+      const index = pendingElements.indexOf(oldEl);
+      if (index !== -1) {
+        pendingElements[index] = newEl;
+      }
+      if (registeredElements.has(oldEl)) {
+        registeredElements.delete(oldEl);
+        registeredElements.add(newEl);
+      }
     },
     getAnchorFn: (pos: Number[]) => {
       if (pos.length === 0) return defaultAnchorFn;
