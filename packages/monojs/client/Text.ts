@@ -2,7 +2,7 @@ import { MonoElement } from "./MonoElement";
 import { Context } from "./Context";
 
 export function Text(children: string) {
-  return class extends MonoElement {
+  const TextClass = class extends MonoElement {
     override tagName = "span";
 
     protected override mount(pos: number[]) {
@@ -17,4 +17,8 @@ export function Text(children: string) {
       fn(el);
     }
   };
+
+  Context.pushElement(TextClass);
+
+  return TextClass;
 }

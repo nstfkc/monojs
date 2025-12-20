@@ -1,11 +1,9 @@
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
-import { beforeEach } from "bun:test";
-import { Context } from "./client/Context";
+import { afterEach } from "bun:test";
+import { cleanup } from "./testing/cleanup";
 
 GlobalRegistrator.register();
 
-beforeEach(() => {
-  document.body.innerHTML = "";
-  document.head.innerHTML = "";
-  Context.reset();
+afterEach(() => {
+  cleanup();
 });

@@ -1,6 +1,8 @@
 function createContext() {
   let renderStore: Map<string, VoidFunction> = new Map();
   let anchorFns: Map<string, (el: HTMLElement) => void> = new Map();
+  let registeredElements: Set<any> = new Set();
+  let consumedElements: Set<any> = new Set();
   const defaultAnchorFn = (el: HTMLElement) => {
     const textNode = document.createTextNode("");
     textNode.before(el);
@@ -24,6 +26,21 @@ function createContext() {
     reset: () => {
       renderStore = new Map();
       anchorFns = new Map();
+      registeredElements = new Set();
+      consumedElements = new Set();
+    },
+    pushElement: (el: any) => {
+      registeredElements.add(el);
+    },
+    markConsumed: (el: any) => {
+      consumedElements.add(el);
+    },
+    getTopLevelElements: (): any[] => {
+      return Array.from(registeredElements).filter(el => !consumedElements.has(el));
+    },
+    resetComponent: () => {
+      registeredElements = new Set();
+      consumedElements = new Set();
     },
     getAnchorFn: (pos: Number[]) => {
       if (pos.length === 0) return defaultAnchorFn;

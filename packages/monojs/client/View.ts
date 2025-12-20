@@ -2,7 +2,7 @@ import { MonoElement } from "./MonoElement";
 import { Context } from "./Context";
 
 export function View(...children: (typeof MonoElement)[]) {
-  return class extends MonoElement {
+  const ViewClass = class extends MonoElement {
     override tagName = "div";
     override children = children;
 
@@ -24,4 +24,11 @@ export function View(...children: (typeof MonoElement)[]) {
       }
     }
   };
+
+  Context.pushElement(ViewClass);
+  for (const child of children) {
+    Context.markConsumed(child);
+  }
+
+  return ViewClass;
 }
