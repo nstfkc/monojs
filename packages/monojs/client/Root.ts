@@ -3,9 +3,15 @@ import { Context } from "./Context";
 
 export function Root(...children: (typeof Component)[]) {
   class RootComponent extends Component {
-    protected mount(pos: number[] = [0]) {
-      // Set up anchor function for Root's children to append to document.body
-      Context.setAnchorFn(pos, document.body);
+    protected override mount(pos: number[] = [0]) {
+      document.body.childNodes.forEach((node) => {
+        document.body.removeChild(node);
+      });
+
+      // Set up anchor function for Root's direct children
+      Context.setAnchorFnDirect(pos, (el: HTMLElement) => {
+        document.body.appendChild(el);
+      });
 
       let _pos = Context.getNextCol(pos);
       for (const Child of children) {

@@ -2,7 +2,6 @@ import { Context } from "./Context";
 
 export class Main {
   static render(App: VoidFunction) {
-    Context.setAnchorElement(document.body);
     App();
 
     const processed = new Set<string>();

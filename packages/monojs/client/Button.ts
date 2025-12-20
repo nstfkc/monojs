@@ -11,8 +11,6 @@ export function Button(...children: (typeof Component | string)[]) {
       for (const [key, value] of Object.entries(this.styles)) {
         (el.style as any)[key] = value;
       }
-      Context.getAnchorForPosition(pos)?.appendChild(el);
-      Context.setAnchorForChildren(pos, el);
 
       let _pos = Context.getNextCol(pos);
       for (const Child of this.children) {
