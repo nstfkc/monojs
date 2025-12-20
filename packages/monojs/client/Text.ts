@@ -7,10 +7,7 @@ export function Text(children: string) {
 
     protected override mount(pos: number[]) {
       const el = document.createElement(this.tagName);
-      for (const [key, value] of Object.entries(this.styles)) {
-        el.style.setProperty(key, value);
-      }
-
+      this.applyStyles(el);
       el.appendChild(document.createTextNode(children));
 
       const fn = Context.getAnchorFn(pos);

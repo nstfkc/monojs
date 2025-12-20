@@ -10,15 +10,24 @@ function createContext() {
     document.body.append(textNode);
   };
 
+  // Helper: Get unconsumed pending elements
+  const getUnconsumed = () => pendingElements.filter(el => !consumedElements.has(el));
+
+  // Helper: Reset registration tracking
+  const resetRegistrations = () => {
+    registeredElements = new Set();
+    consumedElements = new Set();
+    pendingElements = [];
+  };
+
   return {
     getNextCol: (pos: number[]) => {
       return [...pos, 0];
     },
     getNextRow: (pos: number[]) => {
-      const last = pos[pos.length - 1] ?? 0;
-      const out = Object.assign([], pos) as number[];
-      out[out.length - 1] = last + 1;
-      return out;
+      const next = [...pos];
+      next[next.length - 1] = (pos[pos.length - 1] ?? 0) + 1;
+      return next;
     },
     pushRender: (pos: number[], fn: VoidFunction) => {
       renderStore.set(pos.join(":"), fn);
@@ -27,8 +36,7 @@ function createContext() {
     reset: () => {
       renderStore = new Map();
       anchorFns = new Map();
-      registeredElements = new Set();
-      consumedElements = new Set();
+      resetRegistrations();
     },
     pushElement: (el: any) => {
       registeredElements.add(el);
@@ -40,20 +48,12 @@ function createContext() {
     getTopLevelElements: (): any[] => {
       return Array.from(registeredElements).filter(el => !consumedElements.has(el));
     },
-    resetComponent: () => {
-      registeredElements = new Set();
-      consumedElements = new Set();
-      pendingElements = [];
-    },
-    getPendingElements: (): any[] => {
-      return pendingElements.filter(el => !consumedElements.has(el));
-    },
+    resetComponent: resetRegistrations,
+    getPendingElements: () => getUnconsumed(),
     consumePending: (count: number): any[] => {
-      const pending = pendingElements.filter(el => !consumedElements.has(el));
+      const pending = getUnconsumed();
       const consumed = pending.slice(0, count);
-      for (const el of consumed) {
-        consumedElements.add(el);
-      }
+      consumed.forEach(el => consumedElements.add(el));
       return consumed;
     },
     replacePending: (oldEl: any, newEl: any) => {

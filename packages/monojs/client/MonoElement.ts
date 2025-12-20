@@ -12,6 +12,12 @@ export class MonoElement {
 
   protected mount(_pos: number[]) {}
 
+  protected applyStyles(el: HTMLElement) {
+    Object.entries(this.styles).forEach(([key, value]) =>
+      el.style.setProperty(key, value)
+    );
+  }
+
   protected addEventListeners(element: HTMLElement) {
     for (const propertyName in this) {
       if (propertyName.startsWith("__event_handler_")) {
@@ -35,15 +41,9 @@ export class MonoElement {
 
   static style(this: typeof MonoElement, styles: Record<string, any>) {
     const StyledClass = class extends this {
-      constructor(..._args: any[]) {
-        super();
-      }
       override styles = styles;
     };
-
-    // Replace parent class with styled class in pending registrations
     Context.replacePending(this, StyledClass);
-
     return StyledClass;
   }
 
