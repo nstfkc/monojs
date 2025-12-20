@@ -3,16 +3,19 @@ import { Context } from "./Context";
 
 export function View(...children: (typeof Component)[]) {
   return class extends Component {
-    tagName = "div";
-    children = children;
-    protected mount(pos: number[] = [0]) {
+    override tagName = "div";
+    override children = children;
+
+    protected override mount(pos: number[] = [0]) {
       const el = document.createElement(this.tagName);
+      Context.setAnchorFn(pos, el);
+
       for (const [key, value] of Object.entries(this.styles)) {
         el.style.setProperty(key, value);
       }
 
-      Context.getAnchorForPosition(pos)?.appendChild(el);
-      Context.setAnchorForChildren(pos, el);
+      const fn = Context.getAnchorFn(pos);
+      fn?.(el);
 
       let _pos = Context.getNextCol(pos);
       for (const Child of this.children) {

@@ -1,16 +1,14 @@
-import { test, expect, afterEach } from "bun:test";
-import { screen } from "@testing-library/dom";
+import { test, expect } from "bun:test";
 
 import { Main } from "./index";
 import { Text } from "./Text";
 import { View } from "./View";
 import { Root } from "./Root";
 
-test("root render", () => {
+test.only("root render", () => {
   function App() {
     Root(
       View(
-        //
         Text("Red"),
         Text("Blue"),
         View(Text("Nested 1"), Text("Nested 2"))
@@ -21,7 +19,6 @@ test("root render", () => {
     );
   }
   Main.render(App);
-  screen.debug();
 
   expect(document.body.innerHTML).toEqual(
     '<div style="backgroundColor: white;"><span>Red</span><span>Blue</span><div><span>Nested 1</span><span>Nested 2</span></div></div><span>Outside</span>'

@@ -1,4 +1,5 @@
 export class State<T> {
+  static __brand__ = "State";
   private value: T;
   private listeners: Set<(value: T) => void> = new Set();
 
@@ -61,4 +62,8 @@ class StringState extends State<string> {
   prepend(prefix: string) {
     this.set(prefix + this.get());
   }
+}
+
+export function isState<T>(obj: any): obj is State<T> {
+  return obj && obj.constructor && obj.constructor.__brand__ === "State";
 }

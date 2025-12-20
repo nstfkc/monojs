@@ -21,7 +21,6 @@ test("Simple When", () => {
     );
   }
   Main.render(App);
-  screen.debug();
 
   expect(document.body.innerHTML).toEqual("<div><span>Red</span></div>");
 });

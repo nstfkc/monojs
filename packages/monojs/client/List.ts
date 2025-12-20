@@ -12,10 +12,11 @@ export function List<T>(items: T[]) {
     }
 
     protected mount(pos: number[] = [0]) {
-      const parentAnchor = Context.getAnchorForPosition(pos);
-      Context.setAnchorForChildren(pos, parentAnchor);
-
       if (!this.renderFn) return;
+
+      // Pass through parent's anchor function to children
+      const anchorFn = Context.getAnchorFn(pos);
+      Context.setAnchorFnDirect(pos, anchorFn);
 
       let _pos = Context.getNextCol(pos);
       for (const item of items) {

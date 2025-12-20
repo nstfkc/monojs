@@ -19,7 +19,6 @@ test("List renders items", () => {
     );
   }
   Main.render(App);
-  screen.debug();
 
   expect(document.body.innerHTML).toEqual(
     "<div><span>Item 1</span><span>Item 2</span><span>Item 3</span></div>"
@@ -38,7 +37,6 @@ test("List with empty array", () => {
     );
   }
   Main.render(App);
-  screen.debug();
 
   expect(document.body.innerHTML).toEqual("<div></div>");
 });
@@ -58,7 +56,6 @@ test("List with complex items", () => {
     );
   }
   Main.render(App);
-  screen.debug();
 
   expect(document.body.innerHTML).toEqual(
     "<div><div><span>1: Alice</span></div><div><span>2: Bob</span></div></div>"
