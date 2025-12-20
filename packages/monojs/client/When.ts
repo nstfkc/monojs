@@ -1,19 +1,18 @@
-import { Component } from "./Component";
+import { MonoElement } from "./MonoElement";
 import { Context } from "./Context";
 import type { Value } from "./types";
 import { isState } from "./State";
 
 export function When(condition: Value<boolean>) {
-  return class When extends Component {
-    protected thenComponent: typeof Component | null = null;
-    protected elseComponent: typeof Component | null = null;
-
-    static then(thenComponent: typeof Component) {
+  return class extends MonoElement {
+    protected thenComponent: typeof MonoElement | null = null;
+    protected elseComponent: typeof MonoElement | null = null;
+    static then(thenComponent: typeof MonoElement) {
       return class extends this {
         protected override thenComponent = thenComponent;
       };
     }
-    static else(elseComponent: typeof Component) {
+    static else(elseComponent: typeof MonoElement) {
       return class extends this {
         protected override elseComponent = elseComponent;
       };

@@ -1,8 +1,8 @@
-import { Component } from "./Component";
+import { MonoElement } from "./MonoElement";
 import { Context } from "./Context";
 
-export function Button(...children: (typeof Component | string)[]) {
-  return class extends Component {
+export function Button(...children: (typeof MonoElement | string)[]) {
+  return class extends MonoElement {
     override tagName = "button";
     override children = children;
 

@@ -1,8 +1,8 @@
-import { Component } from "./Component";
+import { MonoElement } from "./MonoElement";
 import { Context } from "./Context";
 
 export function Text(children: string) {
-  class TextComponent extends Component {
+  return class extends MonoElement {
     override tagName = "span";
 
     protected override mount(pos: number[]) {
@@ -16,6 +16,5 @@ export function Text(children: string) {
       const fn = Context.getAnchorFn(pos);
       fn(el);
     }
-  }
-  return TextComponent;
+  };
 }

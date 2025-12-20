@@ -2,9 +2,9 @@ import { Context } from "./Context";
 
 type EventName = keyof GlobalEventHandlersEventMap;
 
-export class Component {
+export class MonoElement {
   tagName: string = "div";
-  children: Array<(new () => Component) | string> = [];
+  children: Array<(new () => MonoElement) | string> = [];
   styles: Record<string, any> = {};
   protected cleanupFnList = new Set<VoidFunction>();
 
@@ -26,14 +26,14 @@ export class Component {
     }
   }
 
-  static render(this: typeof Component, pos: number[] = [0]) {
+  static render(this: typeof MonoElement, pos: number[] = [0]) {
     Context.pushRender(pos, () => {
       const instance = new this();
       instance.mount(pos);
     });
   }
 
-  static style(this: typeof Component, styles: Record<string, any>) {
+  static style(this: typeof MonoElement, styles: Record<string, any>) {
     return class extends this {
       constructor(..._args: any[]) {
         super();
@@ -43,11 +43,11 @@ export class Component {
   }
 
   static on<E extends EventName>(
-    this: new () => Component,
+    this: new () => MonoElement,
     event: E,
     handler: (e: GlobalEventHandlersEventMap[E]) => void
   ) {
     this.prototype[`__event_handler_${event}`] = handler;
-    return this as typeof Component;
+    return this as typeof MonoElement;
   }
 }

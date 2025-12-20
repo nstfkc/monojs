@@ -1,17 +1,17 @@
-import { Component } from "./Component";
+import { MonoElement } from "./MonoElement";
 import { Context } from "./Context";
 
 export function List<T>(items: T[]) {
-  return class List extends Component {
-    protected renderFn: ((item: T) => typeof Component) | null = null;
+  return class List extends MonoElement {
+    protected renderFn: ((item: T) => typeof MonoElement) | null = null;
 
-    static item(renderFn: (item: T) => typeof Component) {
+    static item(renderFn: (item: T) => typeof MonoElement) {
       return class extends this {
-        protected renderFn = renderFn;
+        protected override renderFn = renderFn;
       };
     }
 
-    protected mount(pos: number[] = [0]) {
+    protected override mount(pos: number[] = [0]) {
       if (!this.renderFn) return;
 
       // Pass through parent's anchor function to children

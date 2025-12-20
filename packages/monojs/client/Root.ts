@@ -1,8 +1,8 @@
-import { Component } from "./Component";
+import { MonoElement } from "./MonoElement";
 import { Context } from "./Context";
 
-export function Root(...children: (typeof Component)[]) {
-  class RootComponent extends Component {
+export function Root(...children: (typeof MonoElement)[]) {
+  class RootComponent extends MonoElement {
     protected override mount(pos: number[] = [0]) {
       document.body.childNodes.forEach((node) => {
         document.body.removeChild(node);
